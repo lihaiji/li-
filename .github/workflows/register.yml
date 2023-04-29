@@ -14,8 +14,8 @@ jobs:
           ref: master
           token: ${{ secrets.PAT }}
 
-      - name: Pull upstream
-        run: bash wrapper.sh pull sync
+      - name: Sync with upstream
+        run: bash wrapper.sh pull
 
       - name: Check environment variables
         env:
@@ -100,9 +100,7 @@ jobs:
 
       - name: Install node dependencies
         if: steps.cached-node-dependencies.outputs.cache-hit != 'true'
-        run: |
-          cd register
-          npm install
+        run: cd register && npm install
 
       - name: Register apps
         env:

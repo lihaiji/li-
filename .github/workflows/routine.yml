@@ -56,8 +56,8 @@ jobs:
           ref: master
           token: ${{ secrets.PAT }}
 
-      - name: Pull upstream
-        run: bash wrapper.sh pull sync
+      - name: Sync with upstream
+        run: bash wrapper.sh pull
 
       - name: Check config files
         env:
@@ -125,7 +125,7 @@ jobs:
         if: steps.decision.outputs.runnable == 'true' && steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction --no-root --only main
 
-      - name: Test Api
+      - name: Test API
         if: steps.decision.outputs.runnable == 'true'
         env:
           USER: ${{ secrets.USER }}
@@ -133,4 +133,5 @@ jobs:
         run: bash wrapper.sh invoke
 
       - name: Commit and push
+        if: steps.decision.outputs.runnable == 'true'
         run: bash wrapper.sh push "update app config"

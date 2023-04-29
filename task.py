@@ -45,16 +45,11 @@ def get_access_token(app):
 def invoke_api(path):
     app = config(path)
     tokens = get_access_token(app)
-    access_token = tokens.get("access_token")
-    refresh_token = tokens.get("refresh_token")
+    access_token = tokens.get("access_token", "")
+    refresh_token = tokens.get("refresh_token", "")
     username = app["username"]
 
-    if (
-        not access_token
-        or not refresh_token
-        or len(access_token) < 5
-        or len(refresh_token) < 5
-    ):
+    if len(access_token) < 5 or len(refresh_token) < 5:
         return f"✘ 账号 [{username}] 调用失败."
 
     apis = [
